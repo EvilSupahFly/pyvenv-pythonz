@@ -47,35 +47,33 @@ pyvenv() {
         exit 1
     fi
 
+    # If $v_home doesn't exist, assume we're making a new VENV and prompt for Python version
     if [ ! -d "$v_home" ]; then
         py_ver=${2:-$(read -p "Enter the Python version: " version && echo $version)}
 
+        # Check to see if the requested version is installed
         if [ ! pythonz list | grep -q "$py_ver" ]; then
             echo -e "\n${RED}Python version '${WHITE}$py_ver${RED}' is not installed.\n${WHITE}Installing now.\n"
             pythonz install "$py_ver"
         fi
 
-        echo -e "\n${WHITE}Creating folder ${GREEN}$v_home${RESET}\n"
-        mkdir -p "$v_home"  # Create the directory for the virtual environment
+        # Create the directory for the virtual environment
+        mkdir -p "$v_home"
         usepy="$(pythonz locate $py_ver)"
+        # Check to be sure there's a usabe Python version
         if [ -z "$usepy" ]; then
             echo -e "\n${RED}$usepy wasn't found, ${WHITE}despite supposedly being ${RED}already installed${WHITE}.\nThat's both ${RED}unexpected ${WHITE}and ${RED}fatal${WHITE}.\n${RESET}"
             exit 1
         fi
-        echo -e "\n${WHITE}$usepy -m venv '$v_home'${RESET}"
+        # Create VENV
         $usepy -m venv "$v_home" 
     else
         usepy="$v_home/bin/python3"
         py_ver=$($usepy --version 2>&1 | awk '{print $2}')
     fi
 
-    echo -e "${WHITE}\n    \$usepy=$usepy"
-    echo -e "    \$v_name=$v_name"
-    echo "    \$v_home=$v_home"
-    echo -e "    \$py_ver=$py_ver\n"
-
-    echo -e "\n    source '$v_home/bin/activate'"
+    # Activate VENV
     source "$v_home/bin/activate"
-    echo -e "\nType 'deactivate' to exit this venv."
+    echo -e "\nType 'deactivate' to exit this venv when you're done."
     echo -e "${RESET} \n"
 }
