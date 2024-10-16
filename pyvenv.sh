@@ -31,8 +31,8 @@ pyvenv() {
         curl -kL https://raw.github.com/saghul/pythonz/master/pythonz-install | bash
 
         # Check if the bashrc configuration exists
-        if ! grep -q '[[ -s $HOME/.pythonz/etc/bashrc ]]' "$HOME/.bashrc"; then
-            echo '[[ -s $HOME/.pythonz/etc/bashrc ]] && source $HOME/.pythonz/etc/bashrc' >> "$HOME/.bashrc"
+        if ! grep -q "[[ -s \$HOME/.pythonz/etc/bashrc ]]" "$HOME/.bashrc"; then
+            echo "[[ -s \$HOME/.pythonz/etc/bashrc ]] && source \$HOME/.pythonz/etc/bashrc" >> "$HOME/.bashrc"
             echo -e "${GREEN}Added pythonz to .bashrc\n"
         fi
 
