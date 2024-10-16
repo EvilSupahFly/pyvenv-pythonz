@@ -52,7 +52,7 @@ pyvenv() {
         py_ver=${2:-$(read -p "Enter the Python version: " version && echo $version)}
 
         # Check to see if the requested version is installed
-        if [[ ! pythonz list | grep -q "$py_ver" ]]; then
+        if ! pythonz list | grep -q "$py_ver"; then
             echo -e "\n${RED}Python version '${WHITE}$py_ver${RED}' is not installed.\n${WHITE}Installing now.\n"
             pythonz install "$py_ver"
         fi
