@@ -39,38 +39,38 @@ pyvenv() {
         # Source the updated .bashrc
         source "$HOME/.bashrc"
         pyvenv $1
+        return
     fi
 
     # Check to be sure user didn't just hit ENTER when prompted for NAME
     if [ -z "$v_name" ]; then
         echo -e "\n${RED}Error: Virtual environment name must be provided.\n"
-        exit 1
+        return 1
     fi
 
     # If $v_home doesn't exist, assume we're making a new VENV and prompt for Python version
     if [ ! -d "$v_home" ]; then
         py_ver=${2:-$(read -p "Enter the Python version: " version && echo $version)}
-
+        usepy="$(pythonz locate $py_ver)"
+        no_py="ERROR: \`CPython-$py_ver\` is not installed."
         # Check to see if the requested version is installed
-        if ! pythonz list | grep -q "$py_ver"; then
+        if [[ -z "$usepy" || "$usepy" = "$no_py" ]]; then
             echo -e "\n${RED}Python version '${WHITE}$py_ver${RED}' is not installed.\n${WHITE}Installing now.\n"
             pythonz install "$py_ver"
+            usepy="$(pythonz locate $py_ver)"
         fi
 
-        # Create the directory for the virtual environment
-        mkdir -p "$v_home"
-        usepy="$(pythonz locate $py_ver)"
-        # Check to be sure there's a usabe Python version
-        if [ -z "$usepy" ]; then
-            echo -e "\n${RED}$usepy wasn't found, ${WHITE}despite supposedly being ${RED}already installed${WHITE}.\nThat's both ${RED}unexpected ${WHITE}and ${RED}fatal${WHITE}.\n${RESET}"
-            exit 1
-        fi
         # Create VENV
         $usepy -m venv "$v_home" 
     else
         usepy="$v_home/bin/python3"
         py_ver=$($usepy --version 2>&1 | awk '{print $2}')
     fi
+ 
+    echo -e "${WHITE}\n    \$usepy=$usepy"
+    echo -e "    \$v_name=$v_name"
+    echo "    \$v_home=$v_home"
+    echo -e "    \$py_ver=$py_ver\n"
 
     # Activate VENV
     source "$v_home/bin/activate"
