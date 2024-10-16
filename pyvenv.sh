@@ -55,7 +55,7 @@ pyvenv() {
         no_py="ERROR: \`CPython-$py_ver\` is not installed."
         # Check to see if the requested version is installed
         if [[ -z "$usepy" || "$usepy" = "$no_py" ]]; then
-            echo -e "\n${RED}Python version '${WHITE}$py_ver${RED}' is not installed.\n${WHITE}Installing now.\n"
+            echo -e "\n${WHITE}Installing now.\n"
             pythonz install "$py_ver"
             usepy="$(pythonz locate $py_ver)"
         fi
