@@ -11,7 +11,7 @@ For stand-alone usage:
     bash {SAVE_LOCATION}/pyvenv.sh NAME VERSION
 
 ## Running It Zourced
-To use as source, copy the relevant lines from the script into either the individual `$HOME/.bashrc`, giving just that user access to the function, or add it to `/etc/bash.bashrc` to give all users access to it. In either case, PythonZ will run at the user level, and will install locally for the user (if not already installed). Installing PythonZ at the system level isn't recommended.
+To use as source, copy the relevant lines from the script into either the individual user's `$HOME/.bashrc` file, giving just that user access to the function, or add it to `/etc/bash.bashrc` to give all users access to it. In either case, PythonZ will run at the user level, and will install locally for the user (if not already installed). Installing PythonZ at the system level isn't recommended as it can cause problems for non-sudo-entitled users.
 
 For source usage:
 
@@ -42,16 +42,16 @@ Running with no parameters will prompt for name. Running with one will assume NA
 
 `pyvenv 3.11.9`               - enter VENV named "3.11.9"
 
-`pyvenv 3130-tester 3.13.0a6` - enter VENV named 3130-tester and ignore 3.13.0a6
+`pyvenv 3130-tester 3.13.0rc3` - enter VENV named 3130-tester and ignore 3.13.0rc3
 
 If more than one parameter is given, only the first is used, the rest ignored.
 
-### How It WorkZ
+### How It WorkZ - The TLDR;
 First, the script will check for [pythonz](https://github.com/saghul/pythonz). If it can't find it, it will attempt to install it and restart itself.
 Next, it checks for NAME. If NAME doesn't exist, it makes it using Python VERSION, prompting for these values if they weren't given on the command line.
-If a VENV with NAME already exists, the script attempts to activate it.
+If a VENV with NAME already exists, the script attempts to activate it, and VERSION will be ignored if provided on the command line.
 
-There is limited error checking along the way but it's not 100% fail proof.
+There is limited error checking along the way but it's not 100% fail proof. Consider this script to be in beta.
 
 Cavaet Emptor
 ### The Z's
